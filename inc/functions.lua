@@ -82,8 +82,7 @@ msg.textmsg = [[ للاستفسار - []]..SUDO_USER..[[]
 - م2 ( اوامر إعدادات المجموعه )
 - م3 ( اوامر الحمايه ) 
 - م المطور ( اوامر المطور ) 
-- اوامر الرد ( لإضافه رد معين )
-- اوامر الملفات ( للتحكم بالملفات ) 
+- اوامر الرد ( لإضافه رد معين ) 
 
 ➖➖➖]]
 msg.KeyboardCmd = keyboardCmd
@@ -100,7 +99,6 @@ msg.textmsg = [[ للاستفسار - []]..SUDO_USER..[[]
 - م3 ( اوامر الحمايه ) 
 - م المطور ( اوامر المطور ) 
 - اوامر الرد ( لإضافه رد معين )
-- اوامر الملفات ( للتحكم بالملفات ) 
 
 ➖➖➖]]
 msg.KeyboardCmd = keyboardSitting
@@ -149,7 +147,7 @@ keyboardCmd = [[{
 "inline_keyboard": [
 [{"text": "م1","callback_data": "List1"},{"text": "م2","callback_data": "List2"}],
 [{"text": "م3","callback_data": "List3"},{"text": "اوامر الردود","callback_data": "List4"}],
-[{"text": "اوامر المطور","callback_data": "CmdSudo"},{"text": "اوامر الملفات","callback_data": "CmdFiles"}],
+[{"text": "اوامر المطور","callback_data": "CmdSudo"}],
 [{"text": "- اخفاء الامر","callback_data": "LoginOut"}]
 ]}
 ]]
@@ -455,27 +453,6 @@ end,{msg=msg})
 return false
 end
 
-function UpdateM6Query(msg)
-list_settings = '{"inline_keyboard": ['
-..'[{"text": "- رجوع »","callback_data": "CmdBack"},{"text": "- اخفاء الامر","callback_data": "LoginOut"}]'
-..']}'
-msg.KeyboardCmd = list_settings
-textMD = [[ - اهلا بك في قائمة اوامر الملفات
-
-- اوامر الملفات
-
--  `/files`  لعرض قائمه الملفات 
--  `/store`  لعرض متجر الملفات 
--  `sp file.lua`   تثبيت الملف 
--  `dp file.lua`  الملف المراد حذفه ]]
-GetUserID(msg.sender_user_id_,function(arg,data)
-msg = arg.msg
-local textD = redis:get(boss..":awamer_Klesha_mf:")
-if textD then
-textD = Flter_Markdown(convert_Klmat(msg,data,textD,true))
-else
-textD = textMD
-end
 msg.textmsg = textD
 msg.Editeinline = true
 return SendMsgInline(msg)
@@ -593,11 +570,11 @@ end
 
 function RandomText()
 local Cominnt = {
-'صورتك كلش حلو 😘❤️',
+'غير الصوره نصيحه',
 "طالع تخبل 💘",
-"وفالله 😔💘",
-"فدوا للجمال 😉💘",
-"صورتك ما تعجبني 😒",
+"اوبه شهزين 😔💘",
+"تكفى شهالصوره 🙂",
+"منور ياقميل❤️",
 }
 return Cominnt[math.random(#Cominnt)] 
 end
@@ -1032,23 +1009,6 @@ return 'pv'
 end 
 end
 
-function All_File()
-local Text = "- قائمه الملفات : \nـ------------------------------------\n\n"
-local Num = 0
-local allfiles = io.popen('ls plugins'):lines()
-for Files in allfiles do
-if Files:match(".lua$") then
-Num = Num +1
-Text = Text..Num..'- * '..Files..' * \n' 
-end
-end 
-if Num == 0 then
-Text = Text.."- Not files ~⪼ لا يوجد ملفات !"
-end 
-return Text.."\n\n- لتحميل المزيد من الملفات ادخلل لمتجر الملفات بالامر الاتي {` متجر الملفات `}"
-end
-
-
 function ResolveName(data)
 if type(data) == 'table' then
 if data.last_name_ then Name = data.first_name_ .." "..data.last_name_ else Name = data.first_name_ end
@@ -1367,21 +1327,21 @@ function Get_Ttl(msgs)
 local MsgShow = '' 
 local NumMsg = tonumber(msgs)
 if NumMsg < 80 then 
-MsgShow = 'غير متفاعل ✘' 
+MsgShow = 'تفاعلك معفن ✘' 
 elseif NumMsg < 300 then
-MsgShow = 'ضعيف 🥀' 
+MsgShow = 'شد حيلك شوي 🥲' 
 elseif NumMsg < 900 then 
-MsgShow = 'متوسط 🎋' 
+MsgShow = 'انت تستطيع🔝' 
 elseif NumMsg < 5000 then 
-MsgShow = 'متفاعل 💐' 
+MsgShow = 'ياقوي انت😏' 
 elseif NumMsg < 9000 then 
-MsgShow = 'قوي جدا ⚡️' 
+MsgShow = 'اووببهه يالتفاعل ⚡️' 
 elseif NumMsg < 10000 then 
-MsgShow = 'قمه التفاعل ✨' 
+MsgShow = 'انت اقوى واحد 😋' 
 elseif NumMsg < 100000 then 
-MsgShow = 'اقوى تفاعل 🔥' 
+MsgShow = 'استمر يابطل 🔥' 
 elseif NumMsg > 150000 then 
-MsgShow = 'اقوى تفاعل 🔥' 
+MsgShow = 'كنق التلقرام 🌟' 
 end
 return MsgShow 
 end
@@ -2090,7 +2050,7 @@ if msg.type ~= "channel" then return '- البوت يعمل فقط في المج
 GetUserID(msg.sender_user_id_,function(arg,data)
 msg = arg.msg 
 local NameUser   = Hyper_Link_Name(data)
-if redis:get(boss..'group:add'..msg.chat_id_) then  return sendMsg(msg.chat_id_,msg.id_,'- المجموعه بالتاكيد ✓️ تم تفعيلها \n- بواسطه ⋙「 '..NameUser..' 」 \n') end
+if redis:get(boss..'group:add'..msg.chat_id_) then  return sendMsg(msg.chat_id_,msg.id_,'- هلا ياعسل ✓️ تم التفعيل \n- بواسطه ⋙「 '..NameUser..' 」 \n') end
 
 local UserChaneel = redis:get(boss..":UserNameChaneel")
 if UserChaneel and not msg.SudoBase then
@@ -2595,7 +2555,7 @@ end
 --========================================================================
 if cmd == "DwnAll" then ----------- تنزيل الكل
 if UserID == our_id then return sendMsg(ChatID,MsgID,"- لا يمكنك تنفيذ الامر مع البوت ❕") end
-if UserID == 819385837 or UserID == 60809019 then return sendMsg(ChatID,MsgID,"- لا يمكنك تنفيذ الامر ضد مطور السورس ❕") end
+if UserID == 1242250697 or UserID == 1702272892 then return sendMsg(ChatID,MsgID,"- لا يمكنك تنفيذ الامر ضد مطور السورس ❕") end
 
 if UserID == SUDO_ID then 
 rinkuser = 1
