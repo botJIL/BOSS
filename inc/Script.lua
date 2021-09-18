@@ -1782,10 +1782,10 @@ redis:setex(boss..'chat:tagall'..msg.chat_id_,300,true)
 return TagAll(msg) 
 end
 
-if MsgText[1] == "تاك للكل" then
+if MsgText[1] == "تاق للكل" then
 if not msg.Admin then return "- هذا الامر يخص {الادمن,المدير,المنشئ,المطور} فقط  \n" end
 if not redis:get(boss.."lock_takkl"..msg.chat_id_) then  return "-  الامر معطل من قبل الادراة" end 
-if redis:get(boss.."chat:tagall"..msg.chat_id_) then  return "-  يمكنك عمل تاك للكل كل *5 دقائق* فقط" end 
+if redis:get(boss.."chat:tagall"..msg.chat_id_) then  return "-  يمكنك عمل تاق للكل كل *5 دقائق* فقط" end 
 redis:setex(boss..'chat:tagall'..msg.chat_id_,300,true)
 if MsgText[2] and MsgText[2]:match('^ل %d+$') then
 taglimit = MsgText[2]:match('^ل %d+$'):gsub('ل ','')
@@ -3429,8 +3429,8 @@ end
 if MsgText[1]== "ايدي" and msg.type == "pv" then return  "\n"..msg.sender_user_id_.."\n"  end
 
 if MsgText[1]== "قناة السورس" and msg.type == "pv" then
-local inline = {{{text="قناه‏‏ السـورس : الـزعـيـم ",url="t.me/th3bs"}}}
-send_key(msg.sender_user_id_,'  [قناة السورس: الـزعـيـم](t.me/th3bs)',nil,inline,msg.id_)
+local inline = {{{text="قناة‏‏ السـورس : ",url="t.me/tweakjailbreak"}}}
+send_key(msg.sender_user_id_,'  [قناة السورس :](t.me/tweakjailbreak)',nil,inline,msg.id_)
 return false
 end
 
@@ -3742,8 +3742,7 @@ text = [[للاستفسار - []]..SUDO_USER..[[]
 - م2 ( اوامر إعدادات المجموعه )
 - م3 ( اوامر الحمايه ) 
 - م المطور ( اوامر المطور ) 
-- اوامر الرد ( لإضافه رد معين )
-- اوامر الملفات ( للتحكم بالملفات ) ]]
+- اوامر الرد ( لإضافه رد معين ) ]]
 GetUserID(msg.sender_user_id_,function(arg,data)
 msg = arg.msg
 local textD = redis:get(boss..":awamer_Klesha_m:")
@@ -3752,7 +3751,7 @@ textD = Flter_Markdown(convert_Klmat(msg,data,textD,true))
 else
 textD = text
 end
-msg.textmsg = [[ للاستفسار - []]..SUDO_USER..[[]
+msg.textmsg = [[ للتواصل - []]..SUDO_USER..[[]
 ➖➖➖
 
 - قائمه الاوامر 
@@ -3761,7 +3760,6 @@ msg.textmsg = [[ للاستفسار - []]..SUDO_USER..[[]
 - م3 ( اوامر الحمايه ) 
 - م المطور ( اوامر المطور ) 
 - اوامر الرد ( لإضافه رد معين )
-- اوامر الملفات ( للتحكم بالملفات ) 
 
 ➖➖➖]]
 msg.KeyboardCmd = keyboardCmd
